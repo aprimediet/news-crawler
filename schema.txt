@@ -1,0 +1,14 @@
+- _id => PK
+- source => String required
+- type => String required
+- slug => String required
+- category => String
+- author => String required
+- date => Datetime required
+- title => String required
+- media => Array
+- contentRaw => Text
+- content => Text
+- tags => Array
+- related => Array
+- createdAt => Datetime default now
