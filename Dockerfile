@@ -5,7 +5,7 @@ ENV MONGO_HOST=sentiment-mongo
 
 # Install required dependencies
 RUN apk add --no-cache openssl-dev libffi-dev \
-    libxml2 libxml2-dev
+    libxml2 libxml2-dev libxslt libxslt-dev
 
 # SET WORKDIR
 WORKDIR /usr/local/app

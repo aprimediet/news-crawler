@@ -6,7 +6,7 @@ stages:
 .build:
   image: aprimediet/alpine-python-nginx
   before_script:
-    - "apk add --no-cache openssl-dev libffi-dev libxml2 libxml2-dev"
+    - "apk add --no-cache openssl-dev libffi-dev libxml2 libxml2-dev libxslt libxslt-dev"
 
 .release:
   image: docker:latest
