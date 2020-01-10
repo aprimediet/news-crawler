@@ -4,7 +4,8 @@ LABEL maintainer="<Muhamad Aditya Prima> aditya.prima@qti.co.id"
 ENV MONGO_HOST=sentiment-mongo
 
 # Install required dependencies
-RUN apk add --no-cache openssl-dev libffi-dev
+RUN apk add --no-cache openssl-dev libffi-dev \
+    libxml2 libxml2-dev
 
 # SET WORKDIR
 WORKDIR /usr/local/app
