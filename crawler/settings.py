@@ -104,4 +104,4 @@ MONGO_DB_NAME = os.getenv('MONGO_DB_NAME', 'scrapping_dev')
 # ELASTICSEARCH_TYPE = 'items'
 # ELASTICSEARCH_UNIQ_KEY = 'slug'
 
-SPLASH_URL = "http://127.0.0.1:8050"
+# SPLASH_URL = "http://127.0.0.1:8050"
