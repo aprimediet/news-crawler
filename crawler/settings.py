@@ -8,6 +8,7 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+import os
 
 BOT_NAME = 'crawler'
 
@@ -64,9 +65,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'crawler.pipelines.CrawlerPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'crawler.pipelines.CrawlerPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -88,9 +89,19 @@ ROBOTSTXT_OBEY = True
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-MONGO_URI = 'mongodb://localhost:27017/'
-MONGO_DB_NAME = 'scrapping_dev'
+MONGO_HOST = os.getenv('MONGO_HOST', 'localhost')
+MONGO_PORT = os.getenv('MONGO_PORT', 27017)
 
-ITEM_PIPELINES = {
-  "crawler.pipelines.CrawlerPipeline": 300,
-}
+MONGO_URI = "mongodb://{}:{}/".format(MONGO_HOST, MONGO_PORT)
+MONGO_DB_NAME = os.getenv('MONGO_DB_NAME', 'scrapping_dev')
+
+# ITEM_PIPELINES = {
+#   "crawler.pipelines.CrawlerPipeline": 300,
+# }
+
+# ELASTICSEARCH_SERVERS = ['localhost']
+# ELASTICSEARCH_INDEX = 'articles'
+# ELASTICSEARCH_TYPE = 'items'
+# ELASTICSEARCH_UNIQ_KEY = 'slug'
+
+SPLASH_URL = "http://127.0.0.1:8050"
