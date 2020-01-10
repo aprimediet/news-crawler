@@ -10,7 +10,7 @@ RUN apk add --no-cache openssl-dev libffi-dev \
 # SET WORKDIR
 WORKDIR /usr/local/app
 
-ADD deploy /
+ADD deploy /etc
 ADD crawler ./crawler
 ADD scrapy.cfg .
 ADD requirements.txt .
