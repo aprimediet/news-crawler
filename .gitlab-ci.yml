@@ -1,0 +1,56 @@
+stages:
+  - build
+  - release
+  - deploy
+
+.build:
+  image: aprimediet/alpine-python-nginx
+
+.release:
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: "overlay"
+  before_script:
+    - "docker version"
+    - "docker info"
+    - "docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY"
+  after_script:
+    - "docker logout ${CI_REGISTRY}"
+
+.deploy:
+  image: gitlab/dind:latest
+  environment: production
+  services:
+    - docker:dind
+  before_script:
+    - apt-get update -y && apt-get install -y sshpass
+
+build:
+  stage: build
+  extends: .build
+  cache:
+    key: "$CI_BUILD_REF_NAME crawler:latest"
+    paths:
+      - /usr/lib/python3.6
+  script:
+    - pip install -r requirements.txt
+
+release:
+  stage: release
+  extends: .release
+  cache:
+    key: "$CI_BUILD_REF_NAME crawler:latest"
+    paths:
+      - /usr/lib/python3.6
+  script:
+    - "docker build -t $CI_REGISTRY/qti/oculus-dei/crawler:latest --pull ."
+    - "docker push $CI_REGISTRY/qti/oculus-dei/crawler:latest"
+
+deploy:
+  stage: deploy
+  extends: .deploy
+  script:
+    - "export SSHPASS=$NODE3_SERVER_PASS"
+    - sshpass -e ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no $NODE3_SERVER_USER@$NODE3_SERVER_IP "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}; docker stop sentiment-crawler; docker rm sentiment-crawler; docker pull ${CI_REGISTRY}/qti/oculus-dei/crawler:latest; docker run -d --name sentiment-crawler -p 80:80 -p 6080:6080 --network sentiment-analysis ${CI_REGISTRY}/qti/oculus-dei/crawler:latest"
