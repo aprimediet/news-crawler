@@ -117,8 +117,8 @@ class DetikNewsSpider(scrapy.Spider):
         item["tags"] = tags.css(".nav > a::text").extract()
 
         # Get raw content
-        content = data.css(".detail__body-text")
-        item["contentRaw"] = content.get()
+        content = data.css(".detail__body-text::text")
+        item["contentRaw"] = content.extract()
 
         item["createdAt"] = datetime.now()
 
