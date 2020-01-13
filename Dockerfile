@@ -13,6 +13,7 @@ WORKDIR /usr/local/app
 ADD deploy /etc
 ADD crawler ./crawler
 ADD scrapy.cfg .
+ADD scrapyd.cfg .
 ADD requirements.txt .
 
 # INSTALL REQUIRED DEPENDENCIES
